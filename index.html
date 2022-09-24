@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-in</title>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body>
+    <div id="g_id_onload" data-client_id="574066006366-46de4vshl8idbnrsdets22nje4b1jgir.apps.googleusercontent.com"
+        data-auto_select="true" data-callback="handleCredentialResponse">
+    </div>
+    <div class="g_id_signin" data-type="standard"></div>
+
+    <a href="#" style="margin: 40px; padding: 10px 20px; background-color: rgb(250, 180, 100);"
+        onclick="signOut();">Sign out</a>
+
+    <script>
+        function handleCredentialResponse(response) {
+            const responsePayload = decodeJwtResponse(response.credential);
+
+            console.log("ID: " + responsePayload.sub);
+            console.log('Full Name: ' + responsePayload.name);
+            console.log('Given Name: ' + responsePayload.given_name);
+            console.log('Family Name: ' + responsePayload.family_name);
+            console.log("Image URL: " + responsePayload.picture);
+            console.log("Email: " + responsePayload.email);
+        }
+
+        function decodeJwtResponse(response) {
+            const jwt = response.split('.')[1];
+            const decodedJwtJsonData = window.atob(jwt);
+            const decodedJwtData = JSON.parse(decodedJwtJsonData);
+            return decodedJwtData;
+        }
+
+        function signOut() {
+            google.accounts.id.disableAutoSelect();
+        }
+    </script>
+
+</body>
+
+</html>
